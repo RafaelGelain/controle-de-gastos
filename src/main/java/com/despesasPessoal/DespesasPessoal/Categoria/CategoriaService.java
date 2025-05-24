@@ -29,9 +29,26 @@ public class CategoriaService {
         }
 
     //CRIAR
-
+    public CategoriaDTO criarServico (CategoriaDTO categoriaDTO){
+        CategoriaModel categoriaModel = categoriaMapper.map(categoriaDTO);
+        categoriaModel = categoriaRepository.save(categoriaModel);
+        return categoriaMapper.map(categoriaModel);
+    }
     //ATUALIZAR
+    public CategoriaDTO atualizarServico (Long id, CategoriaDTO categoriaDTO){
+        Optional<CategoriaModel> categoriaModel = categoriaRepository.findById(id);
+        if (categoriaModel.isPresent()){
+            CategoriaModel atualizarCategoria = categoriaMapper.map(categoriaDTO);
+            atualizarCategoria.setId(id);
+            CategoriaModel categoriaSalva = categoriaRepository.save(atualizarCategoria);
+            return categoriaMapper.map(categoriaSalva);
+        }else {
+            return null;
+        }
+    }
 
     //DELETAR
-
+    public void deletarCategoria(Long id){
+        categoriaRepository.deleteById(id);
+    }
 }
