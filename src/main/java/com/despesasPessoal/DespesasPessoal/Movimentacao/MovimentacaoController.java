@@ -1,5 +1,6 @@
 package com.despesasPessoal.DespesasPessoal.Movimentacao;
 
+import com.despesasPessoal.DespesasPessoal.Categoria.TipoCategoria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,14 @@ public class MovimentacaoController {
         this.movimentacaoService = movimentacaoService;
     }
 
-    @GetMapping("/listar")
+    @GetMapping()
     public ResponseEntity<List<MovimentacaoDTO>> movimentacaoListar(){
         List<MovimentacaoDTO> listarMovimentacao = movimentacaoService.movimentacaoListar();
         return ResponseEntity.ok(listarMovimentacao);
     }
 
-    @GetMapping("/listar/{id}")
-    public ResponseEntity<?> movimentacaoListarID(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> movimentacaoPorID(@PathVariable Long id){
         MovimentacaoDTO movimentacaoDTO = movimentacaoService.movimentacaoPorID(id);
         if (movimentacaoDTO != null){
             return ResponseEntity.ok(movimentacaoDTO);
@@ -31,13 +32,13 @@ public class MovimentacaoController {
         }
     }
 
-    @PostMapping("/criar")
+    @PostMapping()
     public ResponseEntity<String> movimentacaoCriar(@RequestBody MovimentacaoDTO movimentacaoDTO){
         MovimentacaoDTO movimentacao = movimentacaoService.movimentacaoCriar(movimentacaoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("Movimentacao criada com sucesso.");
     }
 
-    @PutMapping("/alterar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> movimentacaoAlterar(@PathVariable Long id, @RequestBody MovimentacaoDTO movimentacaoDTO){
         MovimentacaoDTO movimentacao = movimentacaoService.movimentacaoAtualizar(id ,movimentacaoDTO);
         if (movimentacao != null){
@@ -47,7 +48,7 @@ public class MovimentacaoController {
         }
     }
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> movimentacaoDeletar(@PathVariable Long id){
         if (movimentacaoService.movimentacaoPorID(id)!=null) {
             movimentacaoService.movimentacaoDeletar(id);
@@ -56,4 +57,14 @@ public class MovimentacaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("a movimentacao com o ID "+id+" nao foi encontrada, verifique se esta correto");
         }
     }
+
+    @GetMapping("/categoria/{tipo}")
+    public ResponseEntity<List<MovimentacaoDTO>> movimentacaoPorFluxo(@PathVariable TipoCategoria tipo){
+        List<MovimentacaoDTO> movimentacaoFiltrada = movimentacaoService.movimentacaoFiltrarPorTipo(tipo);
+        return ResponseEntity.ok(movimentacaoFiltrada);
+    }
+
+//    @GetMapping("/listar/")
+
+
 }

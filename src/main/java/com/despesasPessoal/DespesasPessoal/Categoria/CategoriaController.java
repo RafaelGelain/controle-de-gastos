@@ -16,13 +16,13 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/listar")
+    @GetMapping()
     public ResponseEntity<List<CategoriaDTO>> listarCategorias(){
         List<CategoriaDTO> listarCategoria = categoriaService.listarCategorias();
         return ResponseEntity.ok(listarCategoria);
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listarPorID(@PathVariable Long id){
         CategoriaDTO categoriaDTO = categoriaService.listarPorID(id);
         if (categoriaDTO != null){
@@ -32,13 +32,13 @@ public class CategoriaController {
         }
     }
 
-    @PostMapping("/criar")
+    @PostMapping()
     public ResponseEntity<String> criarCategoria(@RequestBody CategoriaDTO categoriaDTO){
         CategoriaDTO categoriaCriar = categoriaService.criarServico(categoriaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("Criado com Sucesso.");
     }
 
-    @PutMapping("/alterar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> alterarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO){
         CategoriaDTO categoria = categoriaService.atualizarServico(id, categoriaDTO);
         if (categoria != null){
@@ -48,7 +48,7 @@ public class CategoriaController {
         }
     }
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarCategoria(@PathVariable Long id) {
         if (categoriaService.listarPorID(id) != null) {
             categoriaService.deletarCategoria(id);
