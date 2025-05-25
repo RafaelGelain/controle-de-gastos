@@ -1,6 +1,7 @@
 package com.despesasPessoal.DespesasPessoal.Categoria;
 
 import com.despesasPessoal.DespesasPessoal.Movimentacao.MovimentacaoModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class CategoriaModel {
     private TipoCategoria tipoCategoria;
 
     @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
     private List<MovimentacaoModel> movimentacao;
 }

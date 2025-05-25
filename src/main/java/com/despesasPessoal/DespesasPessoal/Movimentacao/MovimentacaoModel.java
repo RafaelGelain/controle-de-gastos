@@ -2,6 +2,7 @@ package com.despesasPessoal.DespesasPessoal.Movimentacao;
 
 import com.despesasPessoal.DespesasPessoal.Categoria.CategoriaModel;
 import com.despesasPessoal.DespesasPessoal.Categoria.TipoCategoria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class MovimentacaoModel {
     private String observacao;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "categoria_id")
     private CategoriaModel categoria;
 }
