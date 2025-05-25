@@ -1,0 +1,60 @@
+package com.despesasPessoal.DespesasPessoal.Movimentacao;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(name = "/movimentacao")
+public class MovimentacaoController {
+    private final MovimentacaoService movimentacaoService;
+
+    public MovimentacaoController(MovimentacaoService movimentacaoService) {
+        this.movimentacaoService = movimentacaoService;
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<MovimentacaoDTO>> movimentacaoListar(){
+        List<MovimentacaoDTO> listarMovimentacao = movimentacaoService.movimentacaoListar();
+        return ResponseEntity.ok(listarMovimentacao);
+    }
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<?> movimentacaoListarID(@PathVariable Long id){
+        MovimentacaoDTO movimentacaoDTO = movimentacaoService.movimentacaoPorID(id);
+        if (movimentacaoDTO != null){
+            return ResponseEntity.ok(movimentacaoDTO);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movimentacao com o ID "+id+" nao encontrada, tente outro");
+        }
+    }
+
+    @PostMapping("/criar")
+    public ResponseEntity<String> movimentacaoCriar(@RequestBody MovimentacaoDTO movimentacaoDTO){
+        MovimentacaoDTO movimentacao = movimentacaoService.movimentacaoCriar(movimentacaoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Movimentacao criada com sucesso.");
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<?> movimentacaoAlterar(@PathVariable Long id, @RequestBody MovimentacaoDTO movimentacaoDTO){
+        MovimentacaoDTO movimentacao = movimentacaoService.movimentacaoAtualizar(id ,movimentacaoDTO);
+        if (movimentacao != null){
+            return ResponseEntity.ok(movimentacao);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("a movimentacao com ID "+id+" nao foi encontrada para realizar a alteracao");
+        }
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> movimentacaoDeletar(@PathVariable Long id){
+        if (movimentacaoService.movimentacaoPorID(id)!=null) {
+            movimentacaoService.movimentacaoDeletar(id);
+            return ResponseEntity.ok("Deletado com sucesso");
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("a movimentacao com o ID "+id+" nao foi encontrada, verifique se esta correto");
+        }
+    }
+}
