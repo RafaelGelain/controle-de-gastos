@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MovimentacaoService {
-    private MovimentacaoMapper movimentacaoMapper;
-    private MovimentacaoRepository movimentacaoRepository;
+    private final MovimentacaoMapper movimentacaoMapper;
+    private final MovimentacaoRepository movimentacaoRepository;
 
     public MovimentacaoService(MovimentacaoMapper movimentacaoMapper, MovimentacaoRepository movimentacaoRepository) {
         this.movimentacaoMapper = movimentacaoMapper;

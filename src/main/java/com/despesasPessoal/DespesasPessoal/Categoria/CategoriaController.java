@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categoria")
 public class CategoriaController {
-    private CategoriaService categoriaService;
+    private final CategoriaService categoriaService;
 
     public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
@@ -52,7 +52,7 @@ public class CategoriaController {
     public ResponseEntity<String> deletarCategoria(@PathVariable Long id) {
         if (categoriaService.listarPorID(id) != null) {
             categoriaService.deletarCategoria(id);
-            return ResponseEntity.ok("deletado");
+            return ResponseEntity.ok("Deletado com sucesso");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("a categoria com o ID "+id+" nao foi encontrada, verifique se esta correto");
         }
