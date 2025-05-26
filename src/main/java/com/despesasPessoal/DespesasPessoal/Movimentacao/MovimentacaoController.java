@@ -1,10 +1,12 @@
 package com.despesasPessoal.DespesasPessoal.Movimentacao;
 
+import com.despesasPessoal.DespesasPessoal.Categoria.CategoriaDTO;
 import com.despesasPessoal.DespesasPessoal.Categoria.TipoCategoria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -57,14 +59,26 @@ public class MovimentacaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("a movimentacao com o ID "+id+" nao foi encontrada, verifique se esta correto");
         }
     }
-
-    @GetMapping("/categoria/{tipo}")
+    //todo: VERIFICAR AMANHA COMO POSSO USAR O NOME DESSA FUNCAO ABAIXO || ELA VAI VERIFICAR O FLUXO POR TIPO ( DESPESA OU RECEITA )
+    @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<MovimentacaoDTO>> movimentacaoPorFluxo(@PathVariable TipoCategoria tipo){
         List<MovimentacaoDTO> movimentacaoFiltrada = movimentacaoService.movimentacaoFiltrarPorTipo(tipo);
         return ResponseEntity.ok(movimentacaoFiltrada);
     }
 
-//    @GetMapping("/listar/")
+    @GetMapping("/categoria/{id}")
+    public ResponseEntity<List<MovimentacaoDTO>> movimentacaoPorCategoria(@PathVariable Long id){
+        List<MovimentacaoDTO> movimentacaoCategoria = movimentacaoService.movimentacaoFiltrarPorCategoria(id);
+        return ResponseEntity.ok(movimentacaoCategoria);
+    }
+
+    @GetMapping("/data/{dataInicio}/{dataFim}")
+    public ResponseEntity<List<?>> movimentaoPorData(@PathVariable LocalDate dataInicio, @PathVariable LocalDate dataFim){
+        List<MovimentacaoDTO> movimentacao = movimentacaoService.movimentacaoFiltrarPorData(dataInicio, dataFim);
+        return ResponseEntity.ok(movimentacao);
+    }
+
+
 
 
 }
