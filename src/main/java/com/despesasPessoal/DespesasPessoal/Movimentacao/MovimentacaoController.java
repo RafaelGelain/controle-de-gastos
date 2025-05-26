@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -78,7 +79,11 @@ public class MovimentacaoController {
         return ResponseEntity.ok(movimentacao);
     }
 
-
+    @GetMapping("/valor")
+    public ResponseEntity<BigDecimal> movimentacaoValorGasto(){
+        BigDecimal saldo = movimentacaoService.movimentacaoSaldoTotal();
+        return ResponseEntity.ok(saldo);
+    }
 
 
 }

@@ -7,6 +7,7 @@ import com.despesasPessoal.DespesasPessoal.Categoria.TipoCategoria;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -74,5 +75,12 @@ public class MovimentacaoService {
         return movimentacao.stream().map(movimentacaoMapper::map).collect(Collectors.toList());
     }
     //CONSULTAR SALDO TOTAL ( DECEITAS - DESPESAS )
+    public BigDecimal movimentacaoSaldoTotal(){
+        List<MovimentacaoModel> movimentacao = movimentacaoRepository.findAll();
+            BigDecimal valorReceitas = movimentacao.stream().filter(m -> m.getTipo() == TipoCategoria.RECEITA).map(MovimentacaoModel::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal valorDespesas = movimentacao.stream().filter(m -> m.getTipo() == TipoCategoria.DESPESA).map(MovimentacaoModel::getValor).reduce(BigDecimal.ZERO,BigDecimal::add);
 
+            return valorReceitas.subtract(valorDespesas);
+
+    }
 }
